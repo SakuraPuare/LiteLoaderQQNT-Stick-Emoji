@@ -3,7 +3,7 @@
 import {pluginLog} from "./utils/frontLog.js";
 import {listenMenu} from "./utils/rightClickMenu.js";
 
-const seAPI = window.stick_emoji
+const pluginAPI = window.stick_emoji
 await onLoad();//注入
 
 // 打开设置界面时触发
@@ -30,7 +30,35 @@ async function onHashUpdate() {
     //"nodeIKernelMsgListener/onAddSendMsg"
     //"nodeIKernelMsgListener/onRecvMsg"
     try {
-        //grabRedBagListener = grAPI.subscribeEvent("nodeIKernelMsgListener/onRecvActiveMsg", (payload) => grabRedBag(payload))
+
+        listener = pluginAPI.subscribeEvent("nodeIKernelMsgListener/onAddSendMsg", async (payload) => {
+            console.log(payload)
+            let sendCount = 0
+            const taskID = setInterval(async () => {
+                const msgSeq = String(parseInt(payload.msgRecord.msgSeq) + 1)//发出去后，msgSeq会+1
+                const chatType = payload.msgRecord.chatType
+                const peerUid = payload.msgRecord.peerUid
+
+                const result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
+                    "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
+                    "emojiId": "76",
+                    "emojiType": "1",
+                    "msgSeq": msgSeq,
+                    "setEmoji": true
+                }, null)
+
+
+                if (result.result !== 0 && sendCount < 5) {
+                    sendCount++
+                } else {//说明重试次数超了或者成功发送
+                    clearInterval(taskID)
+                }
+
+                console.log(result)
+                //pluginLog(msgSeq)
+            }, 500)//这里要延时发，不然会报错{"result": 65018,"errMsg": "群消息不存在"}
+
+        })
         listenMenu()
         pluginLog("事件监听成功")
 
