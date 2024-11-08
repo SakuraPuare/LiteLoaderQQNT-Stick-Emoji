@@ -7,9 +7,9 @@ if (!webContentsId) {
 
 // 在window对象下导出只读对象
 contextBridge.exposeInMainWorld("stick_emoji", {
-    getMenuHTML: () => ipcRenderer.invoke("LiteLoader.grab_redbag.getMenuHTML"),
-    getConfig: () => ipcRenderer.invoke("LiteLoader.grab_redbag.getConfig"),
-    setConfig: (newConfig) => ipcRenderer.invoke("LiteLoader.grab_redbag.setConfig", newConfig),
+    getMenuHTML: () => ipcRenderer.invoke("LiteLoader.stick_emoji.getMenuHTML"),
+    getConfig: () => ipcRenderer.invoke("LiteLoader.stick_emoji.getConfig"),
+    setConfig: (newConfig) => ipcRenderer.invoke("LiteLoader.stick_emoji.setConfig", newConfig),
     invokeNative: (eventName, cmdName, registered, ...args) => invokeNative(eventName, cmdName, registered, ...args),
     subscribeEvent: (cmdName, handler) => subscribeEvent(cmdName, handler),
     unsubscribeEvent: (handler) => unsubscribeEvent(handler),

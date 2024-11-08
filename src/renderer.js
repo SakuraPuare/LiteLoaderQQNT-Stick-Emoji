@@ -33,6 +33,8 @@ async function onHashUpdate() {
 
         listener = pluginAPI.subscribeEvent("nodeIKernelMsgListener/onAddSendMsg", async (payload) => {
             console.log(payload)
+            const config=pluginAPI.getConfig()
+
             let sendCount = 0
             const taskID = setInterval(async () => {
                 const msgSeq = String(parseInt(payload.msgRecord.msgSeq) + 1)//发出去后，msgSeq会+1

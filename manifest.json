@@ -7,7 +7,7 @@
     "version": "0.1.0",
     "authors": [{
         "name": "WJZ_P",
-        "link": "https://github.com/WJZ_P"
+        "link": "https://github.com/WJZ-P"
     }],
     "platform": ["win32", "linux", "darwin"],
     "injects": {
