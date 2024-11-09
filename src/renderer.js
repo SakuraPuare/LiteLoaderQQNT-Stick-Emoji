@@ -2,7 +2,7 @@
 
 import {pluginLog} from "./utils/frontLog.js";
 import {listenMenu} from "./utils/rightClickMenu.js";
-
+import {getRandomInt} from "./utils/math.js";
 const pluginAPI = window.stick_emoji
 await onLoad();//注入
 
@@ -32,7 +32,7 @@ async function onHashUpdate() {
     try {
 
         listener = pluginAPI.subscribeEvent("nodeIKernelMsgListener/onAddSendMsg", async (payload) => {
-            console.log(payload)
+            //console.log(payload)
             const config=await pluginAPI.getConfig()
             if(!config.isStickSelf) return //没开贴自己表情，就直接返回
 
@@ -44,7 +44,7 @@ async function onHashUpdate() {
 
                 const result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
                     "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
-                    "emojiId": String(),
+                    "emojiId": String(getRandomInt(1,10000)),
                     "emojiType": "1",
                     "msgSeq": msgSeq,
                     "setEmoji": true
