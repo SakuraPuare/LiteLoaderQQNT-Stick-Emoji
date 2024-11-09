@@ -33,7 +33,8 @@ async function onHashUpdate() {
 
         listener = pluginAPI.subscribeEvent("nodeIKernelMsgListener/onAddSendMsg", async (payload) => {
             console.log(payload)
-            const config=pluginAPI.getConfig()
+            const config=await pluginAPI.getConfig()
+            if(!config.isStickSelf) return //没开贴自己表情，就直接返回
 
             let sendCount = 0
             const taskID = setInterval(async () => {
@@ -43,7 +44,7 @@ async function onHashUpdate() {
 
                 const result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
                     "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
-                    "emojiId": "76",
+                    "emojiId": String(),
                     "emojiType": "1",
                     "msgSeq": msgSeq,
                     "setEmoji": true
