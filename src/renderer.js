@@ -44,7 +44,7 @@ async function onHashUpdate() {
 
                 const result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
                     "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
-                    "emojiId": String(getRandomInt(1,10000)),
+                    "emojiId": String(getRandomInt(1,1000)),
                     "emojiType": "1",
                     "msgSeq": msgSeq,
                     "setEmoji": true

@@ -7,11 +7,9 @@ class Config {
         isStickSelf: true,//是否给自己的消息贴emoji
     }
 
-    static async initConfig(pluginPath, configPath) {
+    static initConfig(pluginPath, configPath) {
         this.config.pluginPath = pluginPath
         this.config.configPath = configPath
-        this.config.tempImgPath = path.join(pluginPath, 'src/assests/1x1#FFFFFF.gif')
-        this.config.downloadFilePath = path.join(pluginPath, 'decryptedFiles')
         pluginLog('现在执行initConfig方法')
         if (!(fs.existsSync(this.config.configPath))) {//如果文件目录不存在，就创建文件
             pluginLog('第一次启动，准备创建配置文件')
@@ -25,7 +23,7 @@ class Config {
         pluginLog('配置初始化完毕')
     }
 
-    static async getConfig() {
+    static getConfig() {
         try {
             return this.config
         } catch (e) {
@@ -33,7 +31,7 @@ class Config {
         }
     }
 
-    static async setConfig(newConfig) {
+    static setConfig(newConfig) {
         try {
             // 使用 Object.assign() 更新 config 对象的属性
             Object.assign(this.config, newConfig);
