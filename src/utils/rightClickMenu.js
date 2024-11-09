@@ -1,3 +1,5 @@
+import {pluginLog} from "./frontLog.js";
+
 /**
  * 右键菜单插入功能方法，
  * @param {Element} rightClickMenu 右键菜单元素
@@ -37,7 +39,7 @@ function createMenuItemSE(rightClickMenu, icon, title, callback) {
  * 右键菜单监听
  */
 export function listenMenu() {
-    console.log('现在执行addMenuItemEC方法')
+    pluginLog("准备添加右键菜单项")
     let isRightClick = false;
     let textElement = null;
     //监听鼠标点击，根据情况插入功能栏
@@ -50,7 +52,7 @@ export function listenMenu() {
             if (targetClasses.some(className => textElement.classList.contains(className))) //如果是聊天窗口中的文字)
             {
                 textElement = event.target;
-                console.log('EC-目标类名判断成功！')
+                pluginLog("")
             } else {
                 textElement = null;
             }
