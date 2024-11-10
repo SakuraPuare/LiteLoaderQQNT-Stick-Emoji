@@ -3,6 +3,8 @@
 import {pluginLog} from "./utils/frontLog.js";
 import {listenMenu} from "./utils/rightClickMenu.js";
 import {getRandomInt} from "./utils/math.js";
+import {stickEmoji} from "./utils/stickEmoji.js";
+import {retry} from "./utils/retry.js";
 
 const pluginAPI = window.stick_emoji
 await onLoad();//注入
@@ -31,47 +33,48 @@ async function onHashUpdate() {
     //"nodeIKernelMsgListener/onAddSendMsg"
     //"nodeIKernelMsgListener/onRecvMsg"
     try {
-        // const listener1 = pluginAPI.subscribeEvent('nodeIKernelMsgListener/onMsgInfoListUpdate',
-        //     async (payload) => {
-        //         console.log(payload)
-        //     })
+        const listener1 = pluginAPI.subscribeEvent('nodeIKernelMsgListener/onMsgInfoListUpdate',
+            async (payload) => {
+                //要判断grayTipsElement是不是空，因为自己撤回消息也会触发这个事件。
+                console.log(payload)
+                await retry(() => stickEmoji(payload), 5, 500)
+            })
 
-        const listener = pluginAPI.subscribeEvent("nodeIKernelMsgListener/onAddSendMsg", async (payload) => {
-            //console.log(payload)
-            const config = await pluginAPI.getConfig()
-            if (!config.isStickSelf) return //没开贴自己表情，就直接返回
-
-            for (let i = 0; i < 10; i++) {
-                let sendCount = 0
-                const taskID = setInterval(async () => {
-                    const msgSeq = String(parseInt(payload.msgRecord.msgSeq) + 1)//发出去后，msgSeq会+1
-                    const chatType = payload.msgRecord.chatType
-                    const peerUid = payload.msgRecord.peerUid
-
-                    const result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
-                        "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
-                        "emojiId": String(getRandomInt(1, 500)),
-                        "emojiType": "1",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
-                        "msgSeq": msgSeq,
-                        "setEmoji": true,
-                        isPlugin: true,
-                    }, null,)
-
-
-                    if (result.result !== 0 && sendCount < 5) {
-                        sendCount++
-                    } else {//说明重试次数超了或者成功发送
-                        clearInterval(taskID)
-                    }
-
-                    console.log(result)
-
-                    await sleep(100)//来点延迟
-
-                    //pluginLog(msgSeq)
-                }, 500)//这里要延时发，不然会报错{"result": 65018,"errMsg": "群消息不存在"}
-            }
-        })
+        // const listener = pluginAPI.subscribeEvent("nodeIKernelMsgListener/onAddSendMsg", async (payload) => {
+        //     //console.log(payload)
+        //     const config = await pluginAPI.getConfig()
+        //     if (!config.isStickSelf) return //没开贴自己表情，就直接返回
+        //     console.log(app.__vue_app__.config.globalProperties.$store.state.aio_chatMsgArea)
+        //     for (let i = 0; i < 1; i++) {
+        //         let sendCount = 0
+        //         const taskID = setInterval(async () => {
+        //             const msgSeq = String(parseInt(payload.msgRecord.msgSeq) + 1)//发出去后，msgSeq会+1
+        //             const chatType = payload.msgRecord.chatType
+        //             const peerUid = payload.msgRecord.peerUid
+        //
+        //             const result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
+        //                 "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
+        //                 "emojiId": String(getRandomInt(1, 500)),
+        //                 "emojiType": "1",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
+        //                 "msgSeq": msgSeq,
+        //                 "setEmoji": true,
+        //                 isPlugin: true,
+        //             }, null,)
+        //
+        //
+        //             if (result.result !== 0 && sendCount < 5) {
+        //                 sendCount++
+        //             } else {//说明重试次数超了或者成功发送
+        //                 clearInterval(taskID)
+        //             }
+        //
+        //             console.log(result)
+        //             //pluginLog(msgSeq)
+        //         }, 200)//这里要延时发，不然会报错{"result": 65018,"errMsg": "群消息不存在"}
+        //
+        //         await sleep(100)//来点延迟
+        //     }
+        // })
         listenMenu()
         pluginLog("事件监听成功")
 
