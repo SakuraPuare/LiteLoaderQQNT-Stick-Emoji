@@ -3,18 +3,20 @@ import {pluginLog} from "./frontLog.js";
 
 const pluginAPI = window.stick_emoji
 
-export async function stickEmoji(payload) {
-    //注：sendStatus是发送状态，2即为发送完毕；有小灰条的不管；表情列表已经有表情了的不管；插件设置没开贴自己表情的不管。
-    if (payload.msgList[0].sendStatus !== 2 || payload.msgList[0].elements[0].grayTipElement !== null ||
-        payload.msgList[0].elements[0].emojiLikesList.length !== 0 ||
-        !(await pluginAPI.getConfig()).isStickSelf) {
-        pluginLog("条件检测失败，不贴表情")
-        return
-    } //说明不符合条件,直接返回
+export async function stickEmojiSelf(payload) {
+    const selfID = app.__vue_app__.config.globalProperties.$store.state.common_Auth.authData.account//用户自己的Q号
 
-    const msgSeq = String(parseInt(payload.msgRecord.msgSeq) + 1)//发出去后，msgSeq会+1
-    const chatType = payload.msgRecord.chatType
-    const peerUid = payload.msgRecord.peerUid
+    //注：sendStatus是发送状态，2即为发送完毕；有小灰条的不管；表情列表已经有表情了的不管；插件设置没开贴自己表情的不管。
+    if (payload.msgList[0].senderUin !== selfID || payload.msgList[0].sendStatus !== 2 ||
+        payload.msgList[0].elements[0].grayTipElement !== null || payload.msgList[0].emojiLikesList.length !== 0 ||
+        !(await pluginAPI.getConfig()).isStickSelf) {
+        //pluginLog("条件检测失败，不贴表情")
+        return
+    }
+
+    const msgSeq = payload.msgList[0].msgSeq
+    const chatType = payload.msgList[0].chatType
+    const peerUid = payload.msgList[0].peerUid
 
     const result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
         "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
