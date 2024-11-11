@@ -4,13 +4,33 @@ import {pluginLog} from "./utils/frontLog.js";
 import {listenMenu} from "./utils/rightClickMenu.js";
 import {stickEmoji} from "./utils/stickEmoji.js";
 import {retry} from "./utils/retry.js";
+import {SettingListeners} from "./utils/SettingListeners.js";
 
 const pluginAPI = window.stick_emoji
 await onLoad();//注入
 
 // 打开设置界面时触发
-export const onSettingWindowCreated = view => {
+export const onSettingWindowCreated = async view => {
     // view 为 Element 对象，修改将同步到插件设置界面
+    // 这个函数导出之后在QQ设置里面可以直接看见插件页面
+
+    try {
+        //整个插件主菜单
+        const parser = new DOMParser()
+        const settingHTML = parser
+            .parseFromString(await pluginAPI.getMenuHTML(), "text/html")
+            .querySelector("change-summary-plugin-menu")
+
+        const myListener = new SettingListeners(settingHTML)
+        myListener.onLoad()
+        view.appendChild(settingHTML);
+
+        // myListener.onLoad()//调用监听器
+    } catch (e) {
+        setInterval(() => {//防止调试未打开就已经输出，导致捕获不到错误
+            console.log(e)
+        }, 1000)
+    }
 }
 
 async function onLoad() {

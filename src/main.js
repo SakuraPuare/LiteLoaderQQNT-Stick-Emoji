@@ -5,6 +5,7 @@ const {Config} = require("./Config");
 const {pluginLog} = require("./utils/log");
 const pluginPath = path.join(LiteLoader.plugins.stick_emoji.path.plugin);//插件目录
 const configPath = path.join(pluginPath, "config.json");
+const config=Config.config
 onLoad()//妈的，启动！
 
 module.exports.onBrowserWindowCreated = window => {

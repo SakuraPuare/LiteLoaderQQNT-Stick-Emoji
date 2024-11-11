@@ -1,0 +1,156 @@
+<meta charset="UTF-8" xmlns="" xmlns="">
+<change-summary-plugin-menu>
+    <setting-section data-title="主要配置">
+        <setting-panel>
+            <setting-list data-direction="column">
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text>贴自我消息表情</setting-text>
+                        <setting-text data-type="secondary">开启后，自己的每条消息发送后都会贴上指定数量的表情。
+                        </setting-text>
+                    </div>
+                    <!--                    <div class="q-switch" id="se-stick-self-button"><span class="q-switch__handle"></span></div>-->
+                    <div style="display: flex">
+                        <h2 style="font-size: 17px;margin-right: 20px">123</h2>
+                        <input type="range" class="input-range" min="0" max="20" step="1" value="5">
+                    </div>
+                </setting-item>
+
+                <!--                <setting-item data-direction="row">-->
+                <!--                -->
+                <!--                </setting-item>-->
+
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text>自定义表情包外显文本</setting-text>
+                        <setting-text data-type="secondary">修改后，原来显示的"[动画表情]"将被替换为你填入的文本。
+                        </setting-text>
+                    </div>
+                    <input data-type="primary" class="q-input__inner q-input__inner--clearable custom-input"
+                           type="text" id="cs-input-meme" placeholder="请输入文本">
+                </setting-item>
+            </setting-list>
+        </setting-panel>
+    </setting-section>
+
+    <setting-section data-title="附加配置">
+        <setting-panel>
+            <setting-list data-direction="column">
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text>图片外显接入随机文本API&nbsp;&nbsp;&nbsp;&nbsp;(优先于自定义文本)</setting-text>
+                        <setting-text data-type="secondary">
+                            开启后，原来显示的"[图片]"将被替换为从随机文本API获取的文本。
+                        </setting-text>
+                    </div>
+                    <setting-switch id="cs-switch-pic"></setting-switch>
+                </setting-item>
+
+
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text>表情包外显接入随机文本API (优先于自定义文本)</setting-text>
+                        <setting-text data-type="secondary">
+                            开启后，原来显示的"[动画表情]"将被替换为从随机文本API获取的文本。
+                        </setting-text>
+                    </div>
+                    <setting-switch id="cs-switch-meme"></setting-switch>
+                </setting-item>
+
+
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text>随机文本API</setting-text>
+                        <setting-text data-type="secondary">自定义随机文本API</setting-text>
+                    </div>
+                    <input data-type="primary" class="q-input__inner q-input__inner--clearable custom-input"
+                           type="text" id="cs-input-rmapi" placeholder="请输入url" disabled="true">
+                </setting-item>
+
+
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text>随机文本API键值</setting-text>
+                        <setting-text data-type="secondary">从自定义随机文本API获取到的json对象中文本的对应键值
+                        </setting-text>
+                    </div>
+                    <input data-type="primary" class="q-input__inner q-input__inner--clearable custom-input"
+                           type="text" id="cs-input-rmapi-key" placeholder="请输入键值名" disabled="true">
+                </setting-item>
+            </setting-list>
+        </setting-panel>
+    </setting-section>
+
+    <setting-section data-title="插件信息">
+        <setting-panel>
+            <setting-list data-direction="column">
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text>作者的话</setting-text>
+                        <setting-text data-type="secondary">GitHub仓库
+                            WJZ-P/LiteLoaderQQNT-Change-Summary，喜欢请点小星星！
+                        </setting-text>
+                    </div>
+                    <setting-button data-type="secondary" id="cs-gh-btn">让我康康</setting-button>
+                </setting-item>
+
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text id="cs-version"></setting-text>
+                        <setting-text data-type="secondary">烟花易逝, 人情长存</setting-text>
+                    </div>
+                    <setting-button data-type="primary" id="cs-check-update">检查更新</setting-button>
+                </setting-item>
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text id="cs-version">
+                            注意，当前版本修改了UI，旧QQ(如26909版本)可能不适配，有问题可降至v1.1.2版本
+                        </setting-text>
+                        <setting-text data-type="secondary">一般在同时启用“背景插件”时UI会部分显示错误</setting-text>
+                    </div>
+                </setting-item>
+
+            </setting-list>
+        </setting-panel>
+    </setting-section>
+
+    <style>
+        .custom-input {
+            color: #464646;
+            /*background-color: #abbbbb; !* 暗色背景 *!*/
+        }
+
+        .q-input__inner {
+            border-radius: 2px;
+            border: 1px solid #d4d4d4;
+            padding: 4px;
+            font-size: 14px;
+        }
+
+        .input-range {
+            -webkit-appearance: none; /* 去掉默认样式 */
+            width: 175px;
+            height: 8px; /* 滑块高度 */
+            background: #ddd; /* 背景颜色 */
+            border-radius: 5px; /* 圆角 */
+            outline: none; /* 去掉轮廓 */
+            transition: background 0.25s; /* 背景颜色过渡效果 */
+        }
+
+        .input-range::-webkit-slider-thumb {
+            -webkit-appearance: none; /* 去掉默认样式 */
+            appearance: none; /* 去掉默认样式 */
+            width: 18px; /* 滑块宽度 */
+            height: 18px; /* 滑块高度 */
+            background: #0099ff; /* 滑块颜色 */
+            border-radius: 50%; /* 圆形滑块 */
+            cursor: pointer; /* 鼠标指针样式 */
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5); /* 阴影效果 */
+        }
+
+        .input-range:hover {
+            background: #bbb; /* 鼠标悬停时的背景颜色 */
+        }
+
+    </style>
+</change-summary-plugin-menu>

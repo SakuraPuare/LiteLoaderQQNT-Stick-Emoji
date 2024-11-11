@@ -6,11 +6,11 @@ const pluginAPI = window.stick_emoji
 export async function stickEmoji(payload) {
     const selfID = app.__vue_app__.config.globalProperties.$store.state.common_Auth.authData.account//用户自己的Q号
 
-    //注：sendStatus是发送状态，2即为发送完毕；有小灰条的不管；表情列表已经有表情了的不管；插件设置没开贴自己表情的不管。
-    if (payload.msgList[0].senderUin !== selfID || payload.msgList[0].sendStatus !== 2 ||
+    //注：sendStatus是发送状态，2即为发送完毕；有小灰条的不管；表情列表已经有表情了的不管；插件设置没开贴自己表情的不管。私聊是无法贴表情的,chatType为1是私聊
+    if (payload.msgList[0].senderUin !== selfID || payload.msgList[0].sendStatus !== 2 || payload.msgList[0].chatType === 1 ||
         payload.msgList[0].elements[0].grayTipElement !== null || payload.msgList[0].emojiLikesList.length !== 0 ||
         !(await pluginAPI.getConfig()).isStickSelf) {
-        //pluginLog("条件检测失败，不贴表情")
+        pluginLog("条件检测失败，不贴表情")
         return
     }
 
@@ -50,7 +50,7 @@ export async function stickEmoji(payload) {
 }
 
 
-export async function stickEmojiOther(chatType,peerUid,msgSeq) {
+export async function stickEmojiOther(chatType, peerUid, msgSeq) {
     const config = await pluginAPI.getConfig()
 
     let result = undefined
