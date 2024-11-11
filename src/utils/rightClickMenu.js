@@ -40,32 +40,24 @@ function createMenuItemSE(rightClickMenu, icon, title, callback) {
  */
 export function listenMenu() {
     pluginLog("准备添加右键菜单项")
-    let isRightClick = false;
-    let textElement = null;
+    let messageContainer__avatar = null;
     //监听鼠标点击，根据情况插入功能栏
     document.addEventListener("mouseup", (event) => {
-        if (!textElement?.classList) return;//如果元素没有classList属性，直接返回，因为右键的不一定是文字元素
-
         if (event.button === 2) {//如果是鼠标右键
-            isRightClick = true
-            let targetClasses = ["message-content__wrapper", "msg-content-container", "message-content", "text-element"]
-            if (targetClasses.some(className => textElement.classList.contains(className))) //如果是聊天窗口中的文字)
+            messageContainer__avatar = event.target;
+            let targetClasses = ["message-container__avatar", "msg-content-container", "message-content", "image-content", "text-normal"]
+            if (!targetClasses.some(className => messageContainer__avatar?.classList?.contains(className))) //不符合就直接返回
             {
-                textElement = event.target;
-                pluginLog("")
-            } else {
-                textElement = null;
+                messageContainer__avatar = null;
+                //pluginLog("右键元素不符合，直接返回")
             }
-        } else {
-            isRightClick = false;
-            textElement = null;
         }
     });
 
     new MutationObserver(() => {
         const qContextMenu = document.querySelector(".q-context-menu");//右键菜单元素
 
-        if (qContextMenu) {
+        if (qContextMenu && messageContainer__avatar) {
             createMenuItemSE(
                 qContextMenu,
                 `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">

@@ -17,14 +17,34 @@ export async function stickEmojiSelf(payload) {
     const msgSeq = payload.msgList[0].msgSeq
     const chatType = payload.msgList[0].chatType
     const peerUid = payload.msgList[0].peerUid
+    const config = await pluginAPI.getConfig()
 
-    const result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
-        "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
-        "emojiId": String(getRandomInt(1, 500)),
-        "emojiType": "1",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
-        "msgSeq": msgSeq,
-        "setEmoji": true,
-        isPlugin: true,
-    }, null,)
-    console.log(result)
+    let result = undefined
+    for (let i = 0; i < config.stickSelfAmount; i++) {
+        result = pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
+            "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
+            "emojiId": String(getRandomInt(1, 500)),
+            "emojiType": "1",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
+            "msgSeq": msgSeq,
+            "setEmoji": true,
+            isPlugin: true,
+        }, null,)
+    }
+
+    // let count = 0
+    // setInterval(async () => {
+    //     if (count >= config.stickSelfAmount) return
+    //
+    //     result = await pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
+    //         "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
+    //         "emojiId": String(getRandomInt(1, 500)),
+    //         "emojiType": "1",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
+    //         "msgSeq": msgSeq,
+    //         "setEmoji": true,
+    //         isPlugin: true,
+    //     }, null,)
+    //
+    //     console.log(count++)
+    // }, 50)
+    console.log(await result)
 }

@@ -2,7 +2,6 @@
 
 import {pluginLog} from "./utils/frontLog.js";
 import {listenMenu} from "./utils/rightClickMenu.js";
-import {getRandomInt} from "./utils/math.js";
 import {stickEmojiSelf} from "./utils/stickEmojiSelf.js";
 import {retry} from "./utils/retry.js";
 
