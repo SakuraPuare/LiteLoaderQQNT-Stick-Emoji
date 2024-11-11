@@ -8,8 +8,7 @@ export async function stickEmoji(payload) {
 
     //注：sendStatus是发送状态，2即为发送完毕；有小灰条的不管；表情列表已经有表情了的不管；插件设置没开贴自己表情的不管。私聊是无法贴表情的,chatType为1是私聊
     if (payload.msgList[0].senderUin !== selfID || payload.msgList[0].sendStatus !== 2 || payload.msgList[0].chatType === 1 ||
-        payload.msgList[0].elements[0].grayTipElement !== null || payload.msgList[0].emojiLikesList.length !== 0 ||
-        !(await pluginAPI.getConfig()).isStickSelf) {
+        payload.msgList[0].elements[0].grayTipElement !== null || payload.msgList[0].emojiLikesList.length !== 0) {
         pluginLog("条件检测失败，不贴表情")
         return
     }

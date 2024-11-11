@@ -19,7 +19,7 @@ export const onSettingWindowCreated = async view => {
         const parser = new DOMParser()
         const settingHTML = parser
             .parseFromString(await pluginAPI.getMenuHTML(), "text/html")
-            .querySelector("change-summary-plugin-menu")
+            .querySelector("plugin-menu")
 
         const myListener = new SettingListeners(settingHTML)
         myListener.onLoad()

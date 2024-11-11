@@ -4,7 +4,6 @@ const path = require('path');
 
 class Config {
     static config = {
-        isStickSelf: true,//是否给自己的消息贴emoji
         stickSelfAmount: 1,//给自己贴表情的个数
         stickOtherAmount:5,//给其他人贴表情的个数
     }
