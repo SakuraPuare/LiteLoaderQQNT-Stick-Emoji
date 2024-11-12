@@ -2,6 +2,8 @@ import {getRandomInt} from "./math.js";
 import {pluginLog} from "./frontLog.js";
 
 const pluginAPI = window.stick_emoji
+//不对应表情的所有ID
+const unusedEmojiID=[17,40,44,45,]
 
 export async function stickEmojiSelf(payload) {
     const selfID = app.__vue_app__.config.globalProperties.$store.state.common_Auth.authData.account//用户自己的Q号
@@ -27,11 +29,11 @@ export async function stickEmojiSelf(payload) {
 
             const emojiIdArray = Array.from({length: config.stickSelfAmount}, () => getRandomInt(1, 500))
             for (let i = 0; i < config.stickSelfAmount; i++) {
-                stick(chatType, peerUid, msgSeq, emojiIdArray[i]);
+                await stick(chatType, peerUid, msgSeq, emojiIdArray[i]);
                 await sleep(config.carouselInterval)
             }
             for (let i = 0; i < config.stickSelfAmount - 1; i++) {
-                unStick(chatType, peerUid, msgSeq, emojiIdArray[i]);
+                await unStick(chatType, peerUid, msgSeq, emojiIdArray[i]);
                 await sleep(config.carouselInterval)
             }
             executeSticking()
@@ -39,8 +41,10 @@ export async function stickEmojiSelf(payload) {
         executeSticking();
 
     } else {
+        //const emojiIdArray = Array.from({length: config.stickSelfAmount}, () => getRandomInt(1, 500))
+        const emojiIdArray=["😌","😚","😓",3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
         for (let i = 0; i < config.stickSelfAmount; i++) {
-            result = stick(chatType, peerUid, msgSeq, String(getRandomInt(1, 500)))
+            result = await stick(chatType, peerUid, msgSeq, emojiIdArray[i])
         }
         //console.log(await result)
     }
@@ -76,7 +80,7 @@ async function stick(chatType, peerUid, msgSeq, emojiId) {
     return pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
         "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
         "emojiId": emojiId,
-        "emojiType": "1",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
+        "emojiType": "3",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
         "msgSeq": msgSeq,
         "setEmoji": true,
         //isPlugin: true,
