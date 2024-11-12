@@ -1,4 +1,4 @@
-[
+export const qqEmojiList = [
     {
         "emojiId": "0",
         "describe": "/惊讶"
