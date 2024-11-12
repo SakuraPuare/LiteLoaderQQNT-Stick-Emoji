@@ -41,7 +41,7 @@
 
 ## 目录
 
-- [Grab RedBag](#projectname)
+- [Stick Emoji](#projectname)
     - [目录](#目录)
         - [上手指南](#上手指南)
             - [开发前的配置要求](#开发前的配置要求)
