@@ -3,6 +3,7 @@ import {pluginLog} from "./frontLog.js";
 import {qqEmojiList} from "../assests/qq_emoji.js";
 
 const pluginAPI = window.stick_emoji
+const msgIdHandlingList = []
 
 //不对应表情的所有ID
 
@@ -20,20 +21,30 @@ export async function stickEmojiSelf(payload) {
     const chatType = payload.msgList[0].chatType
     const peerUid = payload.msgList[0].peerUid
     const config = await pluginAPI.getConfig()
+    const msgId = payload.msgList[0].msgId
 
     let result = undefined
     if (config.useCarousel) {
         //使用走马灯，非常炫酷！
+        if (msgIdHandlingList.some(msgID => msgID === payload.msgList[0].msgId)) return//说明这条消息正在处理之中。就不要继续走马灯了
+        msgIdHandlingList.push(payload.msgList[0].msgId)
         let carouselCount = 0;
         const executeSticking = async () => {
-            if (++carouselCount > config.carouselCircle) return
+            if (++carouselCount > config.carouselCircle) {
+                for (let i = 0; i < msgIdHandlingList.length; i++)
+                    if (msgIdHandlingList[i] === msgId) {
+                        msgIdHandlingList.splice(i, 1)
+                        return
+                    }
+            }
 
-            const emojiIdArray = Array.from({length: config.stickSelfAmount}, () => getRandomInt(1, 500))
+            const emojiIdArray = getEmojis(config.stickSelfAmount)
+            console.log(emojiIdArray)
             for (let i = 0; i < config.stickSelfAmount; i++) {
                 await stick(chatType, peerUid, msgSeq, emojiIdArray[i]);
                 await sleep(config.carouselInterval)
             }
-            for (let i = 0; i < config.stickSelfAmount - 1; i++) {
+            for (let i = 0; i < config.stickSelfAmount; i++) {
                 await unStick(chatType, peerUid, msgSeq, emojiIdArray[i]);
                 await sleep(config.carouselInterval)
             }
@@ -42,10 +53,10 @@ export async function stickEmojiSelf(payload) {
         executeSticking();
 
     } else {
-        //const emojiIdArray = Array.from({length: config.stickSelfAmount}, () => getRandomInt(1, 500))
-        const emojiIdArray = ["😌", "😚", "😓", 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+        const emojiIdArray = getEmojis(config.stickSelfAmount)
+        console.log(emojiIdArray)
         for (let i = 0; i < config.stickSelfAmount; i++) {
-            result = await stick(chatType, peerUid, msgSeq, emojiIdArray[i])
+            result = stick(chatType, peerUid, msgSeq, emojiIdArray[i])
         }
         //console.log(await result)
     }
@@ -81,7 +92,7 @@ async function stick(chatType, peerUid, msgSeq, emojiId) {
     return pluginAPI.invokeNative("ns-ntApi", "nodeIKernelMsgService/setMsgEmojiLikes", false, {
         "peer": {"chatType": chatType, "peerUid": peerUid, "guildId": ""},
         "emojiId": emojiId,
-        "emojiType": "3",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
+        "emojiType": "1",//这里如果改成2的话，会出现bug。贴了表情，但是什么都不显示
         "msgSeq": msgSeq,
         "setEmoji": true,
         //isPlugin: true,
@@ -108,7 +119,7 @@ function getEmojis(amount) {
 
     // 生成不重复的随机索引
     while (indices.size < amount) {
-        const randomIndex = Math.floor(Math.random() * qqEmojiList.length);
-        indices.add(randomIndex);
+        indices.add(Math.floor(Math.random() * qqEmojiList.length));
     }
+    return Array.from(indices).map(index => qqEmojiList[index].emojiId)
 }
