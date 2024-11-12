@@ -6,6 +6,9 @@ class Config {
     static config = {
         stickSelfAmount: 1,//给自己贴表情的个数
         stickOtherAmount:5,//给其他人贴表情的个数
+        useCarousel:false,
+        carouselCircle:3,//每条消息走马灯最多转几轮
+        carouselInterval:500,//走马灯增删表情的间隔时间
     }
 
     static initConfig(pluginPath, configPath) {

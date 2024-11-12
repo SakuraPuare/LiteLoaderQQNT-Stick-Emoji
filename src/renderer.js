@@ -2,7 +2,7 @@
 
 import {pluginLog} from "./utils/frontLog.js";
 import {listenMenu} from "./utils/rightClickMenu.js";
-import {stickEmoji} from "./utils/stickEmoji.js";
+import {stickEmojiSelf} from "./utils/stickEmoji.js";
 import {retry} from "./utils/retry.js";
 import {SettingListeners} from "./utils/SettingListeners.js";
 
@@ -55,7 +55,7 @@ async function onHashUpdate() {
         const listener1 = pluginAPI.subscribeEvent('nodeIKernelMsgListener/onMsgInfoListUpdate',
             async (payload) => {
                 console.log(payload)
-                await retry(() => stickEmoji(payload), 10, 150)
+                await retry(() => stickEmojiSelf(payload), 10, 150)
             })
         listenMenu()
         pluginLog("事件监听成功")

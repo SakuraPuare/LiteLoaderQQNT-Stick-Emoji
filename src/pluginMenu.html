@@ -38,42 +38,23 @@
                     <div>
                         <setting-text>跑马灯特效</setting-text>
                         <setting-text data-type="secondary">
-                            开启后，对自我消息生效
+                            对自我消息生效，贴表情会有跑马灯特效，酷！
                         </setting-text>
                     </div>
-                    <setting-switch id="cs-switch-pic"></setting-switch>
+                    <setting-switch id="carousel-switch" style="cursor: pointer"></setting-switch>
                 </setting-item>
 
-
                 <setting-item data-direction="row">
-                    <div>
-                        <setting-text>表情包外显接入随机文本API (优先于自定义文本)</setting-text>
-                        <setting-text data-type="secondary">
-                            开启后，原来显示的"[动画表情]"将被替换为从随机文本API获取的文本。
-                        </setting-text>
+                    <div class="row-div">
+                        <h2 style="margin-right: 20px">跑马灯的运行轮数</h2>
+                        <input data-type="primary" class="q-input__inner narrow-input"
+                               type="text" id="carousel-circle" placeholder="请输入整数">
                     </div>
-                    <setting-switch id="cs-switch-meme"></setting-switch>
-                </setting-item>
-
-
-                <setting-item data-direction="row">
-                    <div>
-                        <setting-text>随机文本API</setting-text>
-                        <setting-text data-type="secondary">自定义随机文本API</setting-text>
+                    <div class="row-div">
+                        <h2 style="margin-right: 20px">表情增删间隔时间</h2>
+                        <input data-type="primary" class="q-input__inner narrow-input"
+                               type="text" id="carousel-interval" placeholder="单位ms">
                     </div>
-                    <input data-type="primary" class="q-input__inner q-input__inner--clearable custom-input"
-                           type="text" id="cs-input-rmapi" placeholder="请输入url" disabled="true">
-                </setting-item>
-
-
-                <setting-item data-direction="row">
-                    <div>
-                        <setting-text>随机文本API键值</setting-text>
-                        <setting-text data-type="secondary">从自定义随机文本API获取到的json对象中文本的对应键值
-                        </setting-text>
-                    </div>
-                    <input data-type="primary" class="q-input__inner q-input__inner--clearable custom-input"
-                           type="text" id="cs-input-rmapi-key" placeholder="请输入键值名" disabled="true">
                 </setting-item>
             </setting-list>
         </setting-panel>
@@ -89,9 +70,16 @@
                             WJZ-P/LiteLoaderQQNT-Stick-Emoji，喜欢请点小星星！
                         </setting-text>
                     </div>
-                    <setting-button data-type="secondary" id="cs-gh-btn">让我康康</setting-button>
+                    <setting-button data-type="secondary" id="github-button" style="cursor: pointer">让我康康</setting-button>
                 </setting-item>
 
+                <setting-item data-direction="row">
+                    <div>
+                        <setting-text id="cs-version"></setting-text>
+                        <setting-text data-type="secondary">还不知道写什么</setting-text>
+                    </div>
+                    <setting-button data-type="primary" id="check-update-btn" style="cursor: pointer">检查更新</setting-button>
+                </setting-item>
             </setting-list>
         </setting-panel>
     </setting-section>
@@ -134,5 +122,15 @@
             background: #bbb; /* 鼠标悬停时的背景颜色 */
         }
 
+        .row-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 48%;
+        }
+
+        .narrow-input {
+            width: 50%;
+        }
     </style>
 </plugin-menu>

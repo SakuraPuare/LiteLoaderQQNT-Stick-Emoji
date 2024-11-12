@@ -39,15 +39,72 @@ export class SettingListeners {
         })
     }
 
+    //跑马灯特效
+    async carouselSwitchListener() {
+        const mySwitch = this.document.querySelector('#carousel-switch')
+        if ((await pluginAPI.getConfig()).useCarousel) mySwitch.toggleAttribute('is-active')
+
+        mySwitch.addEventListener('click', async () => {
+            const useCarousel = (await pluginAPI.getConfig()).useCarousel
+            mySwitch.toggleAttribute('is-active')
+            //修改状态
+            await pluginAPI.setConfig({useCarousel: !useCarousel})
+        })
+    }
+
+    //跑马灯的运行轮数
+    async carouselCircleInputListener() {
+        const input = this.document.querySelector('#carousel-circle')
+        input.value = (await pluginAPI.getConfig()).carouselCircle
+        input.addEventListener('change', async event => {
+            await pluginAPI.setConfig({carouselCircle: parseInt(event.target.value)})
+        })
+    }
+
+    //跑马灯每次表情间隔增删时间
+    async carouselIntervalInputListener() {
+        const input = this.document.querySelector('#carousel-interval')
+        input.value = (await pluginAPI.getConfig()).carouselInterval
+        input.addEventListener('change', async event => {
+            await pluginAPI.setConfig({carouselInterval: parseInt(event.target.value)})
+        })
+    }
+
     // 仓库按钮
     async repoButtonListener() {
-        this.document.querySelector('#github-buttn').addEventListener('click', () =>
+        this.document.querySelector('#github-button').addEventListener('click', () =>
             LiteLoader.api.openExternal('https://github.com/WJZ-P/LiteLoaderQQNT-Stick-Emoji'));
+    }
+
+    //检查更新
+    async checkUpdateButtonListener() {
+        const button = this.document.querySelector('#check-update-btn')
+            .addEventListener('click', async (e) => {
+                const req = await fetch(
+                    'https://api.github.com/repos/WJZ-P/LiteLoaderQQNT-Stick-Emoji/releases/latest'
+                );
+                console.log(req)
+                const res = await req.json();
+                const current = LiteLoader.plugins.stick_emoji.manifest.version.split('.');
+                const latest = res.tag_name.replace('v', '').split('.');
+                for (let i in current) {
+                    if (current[i] < latest[i]) {
+                        button.innerHTML = `当前版本 v${current.join('.')} 发现新版本 ${res.tag_name}`;
+                        button.innerHTML = '立即更新';
+                        button.addEventListener('click', () => LiteLoader.api.openExternal(res.html_url));
+                        break;
+                    } else button.innerHTML = '暂未发现';
+                }
+            });
     }
 
     onLoad() {
         this.stickSelfRangeListener()
         this.stickOtherRangeListener()
         this.repoButtonListener()
+        this.carouselSwitchListener()
+        this.checkUpdateButtonListener()
+        this.carouselCircleInputListener()
+        this.carouselIntervalInputListener()
     }
 }
