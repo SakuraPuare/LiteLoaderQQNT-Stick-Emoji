@@ -74,7 +74,7 @@
 
 1. 下载release中的最新版本
 2. 解压后把整个解压出来的文件夹拖动到Plugins目录下即可。
-3. 重启QQ，LiteLoader会自动加载Grab RedBag插件。
+3. 重启QQ，LiteLoader会自动加载Stick Emoji插件。
 
 ### 注意，如果使用了上面的install脚本安装liteloader，QQ设置会自带插件商店，在插件商店里可以一键安装本插件。
 
