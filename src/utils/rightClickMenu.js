@@ -46,8 +46,9 @@ export function listenMenu() {
     document.addEventListener("mouseup", (event) => {
         if (event.button === 2) {//如果是鼠标右键
             messageContainer__avatar = event.target;
+            const chatType=app.__vue_app__.config.globalProperties.$store.state.common_Aio.curAioData.chatType
             let targetClasses = ["message-container__avatar", "msg-content-container", "message-content", "image-content", "text-normal"]
-            if (!targetClasses.some(className => messageContainer__avatar?.classList?.contains(className))) //不符合就直接返回
+            if (!targetClasses.some(className => messageContainer__avatar?.classList?.contains(className)) || chatType!==2) //不符合就直接返回
             {
                 messageContainer__avatar = null;
                 //pluginLog("右键元素不符合，直接返回")
