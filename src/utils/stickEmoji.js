@@ -39,6 +39,7 @@ export async function stickEmojiSelf(payload) {
             }
 
             const emojiIdArray = getEmojis(config.stickSelfAmount)
+            //const emojiIdArray=["917505","917506","917507","917508","917509","917510","917511"]
             console.log(emojiIdArray)
             for (let i = 0; i < config.stickSelfAmount; i++) {
                 await stick(chatType, peerUid, msgSeq, emojiIdArray[i]);
