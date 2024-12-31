@@ -7,6 +7,18 @@ export class SettingListeners {
         this.document = doc
     }
 
+    async autoStickSwitchListener() {
+        const mySwitch = this.document.querySelector('#auto-stick-switch')
+        if ((await pluginAPI.getConfig()).autoStick) mySwitch.toggleAttribute('is-active')
+
+        mySwitch.addEventListener('click', async () => {
+            const autoStick = (await pluginAPI.getConfig()).autoStick
+            mySwitch.toggleAttribute('is-active')
+            // 修改状态
+            await pluginAPI.setConfig({autoStick: !autoStick})
+        })
+    }
+
     //贴自己表情
     async stickSelfRangeListener() {
         const range = this.document.querySelector('#stick-self-range')
@@ -99,6 +111,7 @@ export class SettingListeners {
     }
 
     onLoad() {
+        this.autoStickSwitchListener()
         this.stickSelfRangeListener()
         this.stickOtherRangeListener()
         this.repoButtonListener()

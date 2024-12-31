@@ -4,6 +4,7 @@ const path = require('path');
 
 class Config {
     static config = {
+        autoStick: false, // 自动贴表情开关
         stickSelfAmount: 1,//给自己贴表情的个数
         stickOtherAmount:5,//给其他人贴表情的个数
         useCarousel:false,
