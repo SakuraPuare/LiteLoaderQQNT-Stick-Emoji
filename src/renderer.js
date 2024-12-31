@@ -55,6 +55,12 @@ async function onHashUpdate() {
         const listener1 = pluginAPI.subscribeEvent('nodeIKernelMsgListener/onMsgInfoListUpdate',
             async (payload) => {
                 console.log(payload)
+                // 先检查配置中的自动贴表情开关
+                const config = await pluginAPI.getConfig()
+                if (!config.autoStick) {
+                    pluginLog("自动贴表情功能未开启")
+                    return
+                }
                 await retry(() => stickEmojiSelf(payload), 10, 150)
             })
         listenMenu()
